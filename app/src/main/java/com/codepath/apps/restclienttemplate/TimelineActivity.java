@@ -1,10 +1,15 @@
 package com.codepath.apps.restclienttemplate;
 
+import android.content.ClipData;
+import android.content.Intent;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.codepath.apps.restclienttemplate.models.Tweet;
@@ -20,6 +25,8 @@ import java.util.List;
 import cz.msebera.android.httpclient.Header;
 
 public class TimelineActivity extends AppCompatActivity {
+
+    private final int REQUEST_CODE = 20;
 
     private TwitterClient client;
     private RecyclerView rvTweets;
@@ -44,6 +51,34 @@ public class TimelineActivity extends AppCompatActivity {
         Toast.makeText(this, "Success in Timeline!", Toast.LENGTH_SHORT).show();
         populateHomeTimeLine();
         Toast.makeText(this, "Success after populate in Home Timeline!", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.compose){
+            //tapped on compose icon
+            // Navigate to a new activity.
+            Intent i = new Intent(this, ComposeActivity.class);
+            startActivityForResult(i,REQUEST_CODE);
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        // REQUEST_CODE is defined above
+        if (requestCode== REQUEST_CODE && resultCode == RESULT_OK){
+            //Pull info out of the data Intent(tweet)
+            // Update the recytcler view with this tweet
+        }
     }
 
     private void populateHomeTimeLine() {
